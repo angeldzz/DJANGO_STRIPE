@@ -1,0 +1,36 @@
+# Ignorar la carpeta Lib y todo su contenido
+Lib/
+
+# Ignorar entornos virtuales comunes
+venv/
+.env/
+.env
+
+# Ignorar archivos de caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar archivos de configuración de Git
+*.swp
+*.swo
+
+# Ignorar dependencias y paquetes instalados
+dist/
+build/
+*.egg-info/
+
+# Ignorar configuraciones del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de logs y bases de datos temporales
+*.log
+*.sqlite3
+
+# Ignorar configuraciones de editores de código
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
