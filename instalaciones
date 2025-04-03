@@ -1,0 +1,1 @@
+ pip install django stripe python-dotenv psycopg
