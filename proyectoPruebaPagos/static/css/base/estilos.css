@@ -1,0 +1,16 @@
+.hover-shadow:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modificando {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    animation: cambioColorAzul 1s infinite ease-in-out;
+}
+
+@keyframes cambioColorAzul {
+    0% { color: #007bff; } /* Azul Bootstrap */
+    50% { color: #0056b3; } /* Azul más oscuro */
+    100% { color: #007bff; } /* Vuelve al color inicial */
+}
