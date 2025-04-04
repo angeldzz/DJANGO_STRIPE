@@ -9,15 +9,23 @@ from django.urls import reverse
 from django.views import View
 from django.http import JsonResponse
 from django.views.generic import TemplateView
+from django.contrib.messages import get_messages
 
 class Inicio(TemplateView):
     template_name = "base/inicio.html"
+    
+    def get(self, request, *args, **kwargs):
+        # Consumir los mensajes para que no persistan
+        storage = get_messages(request)
+        list(storage)  # Esto marca los mensajes como consumidos
+        return super().get(request, *args, **kwargs)
+
 
 class CrearUsuarioView(View):
     template_name = 'base/registrarUsuario.html'  # Nombre del template
 
     def get(self, request, *args, **kwargs):
-        # Maneja la solicitud GET: muestra el formulario vacío
+        #metodo obligatorio si queremos que tenga post
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
@@ -27,19 +35,27 @@ class CrearUsuarioView(View):
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
 
+        contexto = {
+            "usuario":username,
+            "email":email,
+            "contra":password,
+            "verficiar_contra":confirm_password,
+        }
         # Validar que las contraseñas coincidan
         if password != confirm_password:
             messages.error(request, "Las contraseñas no coinciden.")
-            return render(request, self.template_name)
+            return render(request, self.template_name, context=contexto)
 
         # Verificar si el usuario ya existe
         if User.objects.filter(username=username).exists():
             messages.error(request, "El nombre de usuario ya está en uso.")
-            return render(request, self.template_name)
+            return render(request, self.template_name, context=contexto)
+
 
         if User.objects.filter(email=email).exists():
             messages.error(request, "El correo electrónico ya está registrado.")
-            return render(request, self.template_name)
+            return render(request, self.template_name, context=contexto)
+
 
         # Crear el nuevo usuario
         try:
@@ -51,7 +67,8 @@ class CrearUsuarioView(View):
             return redirect(reverse('inicio'))  # Redirige a la página principal
         except Exception as e:
             messages.error(request, f"Error al crear el usuario: {str(e)}")
-            return render(request, self.template_name)
+            return render(request, self.template_name, context=contexto)
+
 
 class CreateCheckoutSessionView(View):
     def post(self, request, *args, **kwargs):
