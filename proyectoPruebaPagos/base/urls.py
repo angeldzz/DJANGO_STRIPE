@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import Inicio, CreateCheckoutSessionView,PagoCancelado,PagoExitoso
+from . import views
 
 urlpatterns = [
-    path("", Inicio.as_view(), name="inicio"),
-    path("create-checkout-session/", CreateCheckoutSessionView.as_view(), name="checkout"),
-    path("pago-exitoso/", PagoExitoso.as_view(), name="pago_exitoso"),
-    path("pago-cancelado/", PagoCancelado.as_view(), name="pago_cancelado"),
+    path("", views.Inicio.as_view(), name="inicio"),
+    path("create-checkout-session/", views.CreateCheckoutSessionView.as_view(), name="checkout"),
+    path("crear-usuario/", views.CrearUsuarioView.as_view(), name="crear_usuario"),
+    path("pago-exitoso/", views.PagoExitoso.as_view(), name="pago_exitoso"),
+    path("pago-cancelado/", views.PagoCancelado.as_view(), name="pago_cancelado"),
 ]

@@ -69,10 +69,10 @@ WSGI_APPLICATION = 'proyectoPruebaPagos.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv("DB_ENGINE", "django.db.backends.sqlite3"),
-        'NAME': os.getenv("DB_NAME", BASE_DIR / "db.sqlite3"),
-        'USER': os.getenv("DB_USER", ""),
-        'PASSWORD': os.getenv("DB_PASSWORD", ""),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv("DB_NAME", "your_database_name"),
+        'USER': os.getenv("DB_USER", "your_username"),
+        'PASSWORD': os.getenv("DB_PASSWORD", "your_password"),
         'HOST': os.getenv("DB_HOST", "localhost"),
         'PORT': os.getenv("DB_PORT", "3306"),
     }
@@ -93,16 +93,26 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]  # Carpeta para archivos estáticos adicionales
-STATIC_ROOT = BASE_DIR / "staticfiles"    # Para producción con collectstatic
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-# Media files (archivos subidos por usuarios)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+STATIC_URL = 'static/'
+
+STATICFILES_DIRS=[
+    BASE_DIR / "static", #directorio ocal donde colocoras tus archvios estaticos
+]
 
 # Default primary key field type
+# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+#imagenes
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Configuraciones adicionales para producción
 if not DEBUG:
