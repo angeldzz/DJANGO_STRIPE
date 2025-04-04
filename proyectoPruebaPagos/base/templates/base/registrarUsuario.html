@@ -5,37 +5,259 @@
 {% block titulo %}Registro Usuario{% endblock %}
 
 {% block contenido %}
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Registrar Usuario</h1>
-        
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}" role="alert">
-                    {{ message }}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center font-weight-bold my-2">
+                        <i class="bi bi-person-plus-fill me-2"></i>Crear Cuenta
+                    </h3>
                 </div>
-            {% endfor %}
-        {% endif %}
+                
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-dismissible fade show {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}" role="alert">
+                                <i class="bi {% if message.tags == 'error' %}bi-exclamation-triangle-fill{% else %}bi-check-circle-fill{% endif %} me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
 
-        <form method="post" class="form-registro">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="username" class="form-label">Nombre de Usuario</label>
-                <input value="{{ usuario }}" type="text" class="form-control" id="username" name="username" placeholder="Ingresa tu nombre de usuario" required>
+                    <form method="post" class="form-registro needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="username" class="form-label">
+                                <i class="bi bi-person-fill me-1"></i>Nombre de Usuario
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input value="{{ usuario }}" type="text" class="form-control" id="username" name="username" 
+                                    placeholder="Ingresa tu nombre de usuario" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un nombre de usuario válido.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">
+                                <i class="bi bi-envelope-fill me-1"></i>Correo Electrónico
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input value="{{ email }}" type="email" class="form-control" id="email" name="email" 
+                                    placeholder="Ingresa tu correo electrónico" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un correo electrónico válido.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <i class="bi bi-lock-fill me-1"></i>Contraseña
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input value="{{ contra }}" type="password" class="form-control" id="password" name="password" 
+                                    placeholder="Ingresa tu contraseña" required minlength="8">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <div class="invalid-feedback">
+                                    La contraseña debe tener al menos 8 caracteres.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">
+                                <i class="bi bi-shield-lock-fill me-1"></i>Confirmar Contraseña
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
+                                <input value="{{ verficiar_contra }}" type="password" class="form-control" id="confirm_password" 
+                                    name="confirm_password" placeholder="Confirma tu contraseña" required>
+                                <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <div class="invalid-feedback">
+                                    Las contraseñas no coinciden.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="progress" style="height: 5px;">
+                                <div id="password-strength" class="progress-bar" role="progressbar" style="width: 0%;" 
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small id="passwordHelpBlock" class="form-text text-muted">
+                                <span id="password-strength-text">Fortaleza de la contraseña</span>
+                            </small>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                Acepto los <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">términos y condiciones</a>
+                            </label>
+                            <div class="invalid-feedback">
+                                Debes aceptar los términos y condiciones para continuar.
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-person-plus me-2"></i>Registrar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="card-footer text-center py-3">
+                    <div class="small">
+                        ¿Ya tienes una cuenta? <a href="{% url 'login' %}" class="text-decoration-none">Iniciar sesión</a>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Correo Electrónico</label>
-                <input value="{{ email }}" type="email" class="form-control" id="email" name="email" placeholder="Ingresa tu correo electrónico" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input value="{{ contra }}" type="password" class="form-control" id="password" name="password" placeholder="Ingresa tu contraseña" required>
-            </div>
-            <div class="mb-3">
-                <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
-                <input value="{{ verficiar_contra }}" type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirma tu contraseña" required>
-            </div>
-            <div id="error-message" class="text-danger mb-3" style="display: none;">Las contraseñas no coinciden.</div>
-            <button type="submit" class="btn btn-primary w-100">Registrar</button>
-        </form>
+        </div>
     </div>
+</div>
+
+<!-- Modal para términos y condiciones -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Términos y Condiciones</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Al utilizar nuestro servicio de paseos para perros, usted acepta los siguientes términos y condiciones:</p>
+                <ol>
+                    <li>El servicio está disponible solo para usuarios registrados.</li>
+                    <li>Los pagos se procesan a través de Stripe y están sujetos a sus términos de servicio.</li>
+                    <li>Nos reservamos el derecho de cancelar o modificar el servicio en cualquier momento.</li>
+                    <li>La información proporcionada durante el registro debe ser precisa y completa.</li>
+                    <li>Usted es responsable de mantener la confidencialidad de su contraseña.</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para validación del formulario -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Bootstrap validation
+        const forms = document.querySelectorAll('.needs-validation');
+        
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity() || !passwordsMatch()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                
+                form.classList.add('was-validated');
+            }, false);
+        });
+        
+        // Password matching validation
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm_password');
+        
+        function passwordsMatch() {
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity('Las contraseñas no coinciden');
+                return false;
+            } else {
+                confirmPassword.setCustomValidity('');
+                return true;
+            }
+        }
+        
+        password.addEventListener('input', passwordsMatch);
+        confirmPassword.addEventListener('input', passwordsMatch);
+        
+        // Password strength meter
+        password.addEventListener('input', function() {
+            const strength = calculatePasswordStrength(this.value);
+            const progressBar = document.getElementById('password-strength');
+            const strengthText = document.getElementById('password-strength-text');
+            
+            progressBar.style.width = strength.score + '%';
+            progressBar.className = 'progress-bar progress-bar-striped progress-bar-animated bg-' + strength.class;
+            strengthText.textContent = 'Fortaleza: ' + strength.text;
+        });
+        
+        function calculatePasswordStrength(password) {
+            let score = 0;
+            let strengthClass = 'danger';
+            let strengthText = 'Muy débil';
+            
+            if (password.length > 0) {
+                // Length check
+                score += Math.min(password.length * 4, 25);
+                
+                // Character variety checks
+                if (/[A-Z]/.test(password)) score += 15;
+                if (/[a-z]/.test(password)) score += 10;
+                if (/[0-9]/.test(password)) score += 15;
+                if (/[^A-Za-z0-9]/.test(password)) score += 20;
+                
+                // Determine text and class based on score
+                if (score >= 80) {
+                    strengthClass = 'success';
+                    strengthText = 'Muy fuerte';
+                } else if (score >= 60) {
+                    strengthClass = 'info';
+                    strengthText = 'Fuerte';
+                } else if (score >= 40) {
+                    strengthClass = 'warning';
+                    strengthText = 'Moderada';
+                } else if (score >= 20) {
+                    strengthClass = 'danger';
+                    strengthText = 'Débil';
+                }
+            }
+            
+            return {
+                score: score,
+                class: strengthClass,
+                text: strengthText
+            };
+        }
+        
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            togglePasswordVisibility(password, this.querySelector('i'));
+        });
+        
+        document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+            togglePasswordVisibility(confirmPassword, this.querySelector('i'));
+        });
+        
+        function togglePasswordVisibility(input, icon) {
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        }
+    });
+</script>
 {% endblock %}
+

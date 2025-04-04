@@ -1,10 +1,160 @@
 {% extends "base/base.html" %}
 
+{% load static %}
+
+{% block titulo %}Iniciar Sesión{% endblock %}
+
 {% block contenido %}
-    <h2>Iniciar sesión</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Iniciar sesión</button>
-    </form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center font-weight-bold my-2">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                    </h3>
+                </div>
+                
+                <div class="card-body">
+                    {% if form.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            Usuario o contraseña incorrectos. Por favor, inténtalo de nuevo.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-dismissible fade show {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}" role="alert">
+                                <i class="bi {% if message.tags == 'error' %}bi-exclamation-triangle-fill{% else %}bi-check-circle-fill{% endif %} me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="id_username" class="form-label">
+                                <i class="bi bi-person-fill me-1"></i>Nombre de Usuario
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control" id="id_username" name="username" 
+                                    placeholder="Ingresa tu nombre de usuario" required autofocus>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa tu nombre de usuario.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="id_password" class="form-label">
+                                <i class="bi bi-lock-fill me-1"></i>Contraseña
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="id_password" name="password" 
+                                    placeholder="Ingresa tu contraseña" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa tu contraseña.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="remember-me" name="remember">
+                                <label class="form-check-label" for="remember-me">
+                                    Recordarme
+                                </label>
+                            </div>
+                            <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                            </button>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <p class="mb-0">O inicia sesión con:</p>
+                            <div class="d-flex justify-content-center gap-2 mt-2">
+                                <button type="button" class="btn btn-outline-primary">
+                                    <i class="bi bi-google me-2"></i>Google
+                                </button>
+                                <button type="button" class="btn btn-outline-primary">
+                                    <i class="bi bi-facebook me-2"></i>Facebook
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="card-footer text-center py-3">
+                    <div class="small">
+                        ¿No tienes una cuenta? <a href="{% url 'crear_usuario' %}" class="text-decoration-none">Regístrate ahora</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Bootstrap validation
+        const forms = document.querySelectorAll('.needs-validation');
+
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                
+                form.classList.add('was-validated');
+            }, false);
+        });
+        
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const password = document.getElementById('id_password');
+            const icon = this.querySelector('i');
+            
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                password.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+        
+        // Add animation to the card
+        const card = document.querySelector('.card');
+        setTimeout(() => {
+            card.classList.add('animate__animated', 'animate__fadeIn');
+        }, 100);
+    });
+    window.addEventListener("load", function() {
+    
+    //! No funciona el remember me
+    let rememberMe = document.getElementById("remember-me");
+    if (!rememberMe.checked) {
+        document.cookie = "sessionid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+    });
+    
+</script>
 {% endblock %}
+

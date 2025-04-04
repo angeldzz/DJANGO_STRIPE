@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'css/base/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/base/estilos.css' %}" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="{% static 'js/base/bootstrap.bundle.min.js' %}"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <title>{% block titulo %}Login Usuario{% endblock %}</title>
@@ -22,6 +24,38 @@
         .esp::selection{
             background: rgba(0, 0, 0, 0.29);
         }
+        
+        /* Animaciones para formularios */
+        .card {
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .btn {
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Mejoras para la navegación */
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 0 0 10px 10px;
+        }
+        
+        /* Mejoras para dispositivos móviles */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
     </style>
 </head>
 
@@ -31,18 +65,30 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <!-- Logo o Título -->
-                <a class="navbar-brand" href="{% url 'inicio' %}">Perros</a>
+                <a class="navbar-brand d-flex align-items-center" href="{% url 'inicio' %}">
+                    <i class="bi bi-house-heart-fill me-2 text-primary"></i>
+                    <span>Paseos Perros</span>
+                </a>
                 <!-- Botón de Login alineado a la derecha -->
                 <div class="d-flex">
                     {% if user.is_authenticated %}
-                        <p class="navbar-text pe-3">{{ user.username }}</p>
-                        <form method="post" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button class="btn btn-primary" type="submit">logout</button>
-                        </form>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-person-circle me-2"></i>
+                            <p class="navbar-text pe-3 mb-0">{{ user.username }}</p>
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-primary" type="submit">
+                                    <i class="bi bi-box-arrow-right me-1"></i>Cerrar sesión
+                                </button>
+                            </form>
+                        </div>
                     {% else %}
-                        <a href="{% url 'login' %}" class="btn btn-primary me-2">Login</a>
-                        <a href="{% url 'crear_usuario' %}" class="btn btn-success">Crear Usuario</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                        </a>
+                        <a href="{% url 'crear_usuario' %}" class="btn btn-primary">
+                            <i class="bi bi-person-plus me-1"></i>Crear Usuario
+                        </a>
                     {% endif %}
                 </div>
             </div>
@@ -51,19 +97,26 @@
     <!-- Contenido principal -->
     <div class="container">
         <div class="row">
-            <div class="col-3"></div>
-            <div class="col-6">
-                <h5 class="display-5 text-center esp">Paseos Perros</h5>
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <h5 class="display-5 text-center esp my-4">Paseos Perros</h5>
             </div>
-            <div class="col-3"></div>
+            <div class="col-lg-3"></div>
         </div>
         <div class="row">
-            <div class="col-3"></div>
-            <div class="col-6 text-center mt-4">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 text-center mt-4">
                 {% block contenido %} <p>Gestion Adopcion de perros</p> {% endblock %}
-
             </div>
-            <div class="col-3"></div>
+            <div class="col-lg-3"></div>
         </div>
     </div>
+    
+    <!-- Footer -->
+    <footer class="bg-light mt-5 py-3 text-center">
+        <div class="container">
+            <p class="mb-0 text-muted">© 2023 Paseos Perros. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 </body>
+</html>
