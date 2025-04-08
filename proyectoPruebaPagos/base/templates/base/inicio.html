@@ -1,29 +1,199 @@
 {% extends "base/base.html" %}
 
+{% block titulo %}Inicio - PetHome{% endblock %}
+
 {% block contenido %}
-    <h1>Bienvenido a la tienda</h1>
-    <button id="checkout-button">Pagar Paseo de 1 hora</button>
+<div class="row">
+    <!-- Hero Section -->
+    <div class="col-12 mb-5">
+        <div class="card border-0 rounded-4 overflow-hidden">
+            <div class="card-body p-0 position-relative">
+                <div style="background: linear-gradient(rgba(29, 31, 31, 0.7), rgba(29, 31, 31, 0.7)), url('https://images.unsplash.com/photo-1450778869180-41d0601e046e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center; background-size: cover; height: 400px;" class="d-flex align-items-center justify-content-center">
+                    <div class="text-center p-4">
+                        <h1 class="display-4 text-white mb-3">Encuentra tu compañero perfecto</h1>
+                        <p class="lead text-white mb-4">Adopta una mascota y cambia dos vidas: la suya y la tuya</p>
+                        <button id="checkout-button" class="checkout-button">
+                            {% if user.is_authenticated %}
+                            <i class="bi bi-heart-fill me-2"></i>Apoya con un paseo de 1 hora
+                            {% else %}
+                            <i href="{% url 'login' %}" class="bi bi-heart-fill me-2"></i>Apoya con un paseo de 1 hora
+                            {% endif %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features Section -->
+    <div class="col-12 mb-5">
+        <h2 class="section-title mb-4">¿Por qué adoptar?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon">
+                            <i class="bi bi-heart"></i>
+                        </div>
+                        <h3 class="h5 mb-3">Salvas una vida</h3>
+                        <p class="text-muted">Cada mascota adoptada es una vida salvada y un espacio libre para ayudar a otra mascota necesitada.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon" style="background-color: var(--olive);">
+                            <i class="bi bi-house-heart"></i>
+                        </div>
+                        <h3 class="h5 mb-3">Compañía incondicional</h3>
+                        <p class="text-muted">Las mascotas adoptadas suelen desarrollar un vínculo especial con sus nuevas familias.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon" style="background-color: var(--orange);">
+                            <i class="bi bi-emoji-smile"></i>
+                        </div>
+                        <h3 class="h5 mb-3">Mejora tu bienestar</h3>
+                        <p class="text-muted">Está comprobado que tener una mascota reduce el estrés y mejora la salud física y mental.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Featured Pets Section -->
+    <div class="col-12 mb-5">
+        <h2 class="section-title mb-4">Mascotas destacadas</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card pet-card h-100">
+                    <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="card-img-top" alt="Perro">
+                    <div class="card-body">
+                        <h5 class="card-title">Max</h5>
+                        <p class="card-text">Labrador, 2 años</p>
+                        <p class="card-text text-muted">Juguetón, cariñoso y excelente con niños.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary w-100">Conocer más</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card pet-card h-100">
+                    <img src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="card-img-top" alt="Gato">
+                    <div class="card-body">
+                        <h5 class="card-title">Luna</h5>
+                        <p class="card-text">Gato mestizo, 1 año</p>
+                        <p class="card-text text-muted">Tranquila, independiente y muy limpia.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary w-100">Conocer más</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card pet-card h-100">
+                    <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="card-img-top" alt="Perro">
+                    <div class="card-body">
+                        <h5 class="card-title">Rocky</h5>
+                        <p class="card-text">Pastor Alemán, 3 años</p>
+                        <p class="card-text text-muted">Leal, protector y muy inteligente.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary w-100">Conocer más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Adoption Process Section -->
+    <div class="col-12 mb-5">
+        <h2 class="section-title mb-4">Proceso de adopción</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card h-100 border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <span class="h3 mb-0" style="color: var(--burgundy);">1</span>
+                        </div>
+                        <h3 class="h5 mb-3">Explora</h3>
+                        <p class="text-muted">Navega por nuestro catálogo de mascotas disponibles.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <span class="h3 mb-0" style="color: var(--burgundy);">2</span>
+                        </div>
+                        <h3 class="h5 mb-3">Solicita</h3>
+                        <p class="text-muted">Completa el formulario de solicitud de adopción.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <span class="h3 mb-0" style="color: var(--burgundy);">3</span>
+                        </div>
+                        <h3 class="h5 mb-3">Conoce</h3>
+                        <p class="text-muted">Agenda una visita para conocer a tu futura mascota.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <span class="h3 mb-0" style="color: var(--burgundy);">4</span>
+                        </div>
+                        <h3 class="h5 mb-3">Adopta</h3>
+                        <p class="text-muted">Completa el proceso y lleva a tu nuevo amigo a casa.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="col-12 mb-5">
+        <div class="card border-0" style="background-color: var(--beige);">
+            <div class="card-body p-5 text-center">
+                <h2 class="mb-4">¿Listo para cambiar una vida?</h2>
+                <p class="lead mb-4">Hay muchas mascotas esperando encontrar un hogar lleno de amor.</p>
+                <a href="#" class="btn btn-primary btn-lg px-5">Ver todas las mascotas</a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script>
-        var stripe = Stripe("pk_test_51R9i69P9gnNCWYvBjXxmTZwJwbLCLEFOHnrZnX4r9EWN1CTvgDJuKXLcradThwuXG6YcB2z55bZa9wAInEs10yzk0073Vfiatr");
+<script>
+    var stripe = Stripe("pk_test_51R9i69P9gnNCWYvBjXxmTZwJwbLCLEFOHnrZnX4r9EWN1CTvgDJuKXLcradThwuXG6YcB2z55bZa9wAInEs10yzk0073Vfiatr");
 
-        document.getElementById("checkout-button").addEventListener("click", function () {
-            fetch("{% url 'checkout' %}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": "{{ csrf_token }}",
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                return stripe.redirectToCheckout({ sessionId: data.id });
-            })
-            .then(result => {
-                if (result.error) {
-                    alert(result.error.message);
-                }
-            });
+    document.getElementById("checkout-button").addEventListener("click", function () {
+        fetch("{% url 'checkout' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            return stripe.redirectToCheckout({ sessionId: data.id });
+        })
+        .then(result => {
+            if (result.error) {
+                alert(result.error.message);
+            }
         });
-    </script>
+    });
+</script>
 {% endblock %}

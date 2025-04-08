@@ -1,13 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pago cancelado</title>
-</head>
-<body>
-    <h1>Pago cancelado</h1>
-    <p>Tu pago ha sido cancelado.</p>
-    <a href="{% url 'inicio' %}">Volver al inicio</a>
-</body>
-</html>
+{% extends "base/base.html" %}
+
+{% block titulo %}Pago Cancelado - PetHome{% endblock %}
+
+{% block contenido_completo %}
+<div class="success-container">
+    <div class="error-icon">
+        <i class="bi bi-exclamation-circle"></i>
+    </div>
+    <h1 class="display-5 mb-4">Pago Cancelado</h1>
+    <p class="lead mb-4">No te preocupes, tu pago ha sido cancelado y no se ha realizado ningún cargo.</p>
+    
+    <div class="card mb-4 border-0" style="background-color: var(--beige);">
+        <div class="card-body p-4">
+            <h5 class="mb-3">¿Por qué donar?</h5>
+            <p>Tu contribución es fundamental para ayudarnos a:</p>
+            <ul class="text-start">
+                <li>Proporcionar alimentos y cuidados de calidad a nuestras mascotas</li>
+                <li>Cubrir gastos veterinarios y medicamentos</li>
+                <li>Mantener nuestras instalaciones en óptimas condiciones</li>
+                <li>Financiar programas de educación sobre tenencia responsable</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0">
+                <div class="card-body text-center p-4">
+                    <h5 class="mb-3">Otras formas de ayudar</h5>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="#" class="btn btn-outline-secondary">
+                            <i class="bi bi-gift me-2"></i>Donar suministros
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary">
+                            <i class="bi bi-clock me-2"></i>Voluntariado
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary">
+                            <i class="bi bi-house-heart me-2"></i>Hogar temporal
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <a href="{% url 'inicio' %}" class="btn btn-primary btn-lg px-5">
+            <i class="bi bi-house me-2"></i>Volver al inicio
+        </a>
+        <button id="retry-checkout-button" class="btn btn-secondary btn-lg px-5">
+            <i class="bi bi-arrow-repeat me-2"></i>Intentar de nuevo
+        </button>
+    </div>
+    
+    <div class="mt-4">
+        <p class="small text-muted">Si tienes alguna pregunta o problema con el proceso de pago, no dudes en <a href="#">contactarnos</a>.</p>
+    </div>
+</div>
+
+<script>
+    var stripe = Stripe("pk_test_51R9i69P9gnNCWYvBjXxmTZwJwbLCLEFOHnrZnX4r9EWN1CTvgDJuKXLcradThwuXG6YcB2z55bZa9wAInEs10yzk0073Vfiatr");
+
+    document.getElementById("retry-checkout-button").addEventListener("click", function () {
+        fetch("{% url 'checkout' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            return stripe.redirectToCheckout({ sessionId: data.id });
+        })
+        .then(result => {
+            if (result.error) {
+                alert(result.error.message);
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmacion de Pago - PetHome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #1d1f1f;
+            color: #fcfbf8;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+            background-color: #fcfbf8;
+        }
+        .footer {
+            background-color: #f2e3bc;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #4e1938;
+        }
+        .button {
+            display: inline-block;
+            background-color: #98b0e5;
+            color: #1d1f1f;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .details {
+            background-color: #f2e3bc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .total {
+            font-weight: bold;
+            border-top: 1px solid #c19875;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Gracias por tu donacion!</h1>
+    </div>
+    <div class="content">
+        <p>Hola {{ nombre }},</p>
+        
+        <p>Queremos agradecerte por tu generosa contribucion a PetHome. Tu apoyo nos ayuda a cuidar mejor de nuestras mascotas mientras encuentran un hogar permanente.</p>
+        
+        <div class="details">
+            <h3>Detalles de tu contribucion:</h3>
+            <div class="details-row">
+                <span>Paseo de 1 hora:</span>
+                <span>25.00 EUR</span>
+            </div>
+            <div class="details-row">
+                <span>Impuestos:</span>
+                <span>0.00 EUR</span>
+            </div>
+            <div class="details-row total">
+                <span>Total:</span>
+                <span>25.00 EUR</span>
+            </div>
+        </div>
+        
+        <p>Tu donacion sera utilizada para:</p>
+        <ul>
+            <li>Proporcionar alimentos de calidad a nuestras mascotas</li>
+            <li>Cubrir gastos veterinarios y medicamentos</li>
+            <li>Mantener nuestras instalaciones en optimas condiciones</li>
+        </ul>
+        
+        <p>Este correo electronico sirve como comprobante de tu donacion.</p>
+        
+        <p>Si tienes alguna pregunta o necesitas mas informacion, no dudes en contactarnos.</p>
+        
+        <a href="http://localhost:8000" class="button">Visitar PetHome</a>
+    </div>
+    <div class="footer">
+        <p>2023 PetHome. Todos los derechos reservados.</p>
+        <p>Este es un correo automatico, por favor no responder a esta direccion.</p>
+    </div>
+</body>
+</html>
