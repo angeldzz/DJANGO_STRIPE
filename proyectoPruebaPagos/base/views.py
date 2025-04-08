@@ -11,7 +11,7 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.contrib.messages import get_messages
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import logging
@@ -141,8 +141,7 @@ class PagoExitoso(TemplateView):
     
     def enviar_correo_confirmacion(self, email, nombre):
         """Envía un correo electrónico de confirmación al cliente."""
-        # Usar un asunto simple sin caracteres especiales para evitar problemas de codificación
-        asunto = 'Confirmacion de Pago - PetHome'
+        asunto = 'Confirmación de Pago - PetHome'
         
         # Contexto para la plantilla
         contexto = {
@@ -150,26 +149,23 @@ class PagoExitoso(TemplateView):
         }
         
         try:
-            print(f"Enviando correo a: {email}")
-            print(f"Nombre del cliente: {nombre}")
-            print(f"Codificación del nombre: {nombre.encode('utf-8')}")
-            # Renderizar el correo HTML
+            # Renderizar el contenido del correo
             html_message = render_to_string('base/email/pago_exitoso_email.html', contexto)
             plain_message = strip_tags(html_message)
             
-            # Crear el mensaje de correo
-            msg = EmailMultiAlternatives(
+            # Crear el mensaje usando EmailMessage
+            email_message = EmailMessage(
                 subject=asunto,
-                body=plain_message,
+                body=html_message,  # Usamos directamente el HTML como cuerpo
                 from_email=settings.DEFAULT_FROM_EMAIL,
-                to=[email]
+                to=[email],
             )
             
-            # Adjuntar la versión HTML
-            msg.attach_alternative(html_message, "text/html")
+            # Especificar que el contenido es HTML
+            email_message.content_subtype = 'html'
             
             # Enviar el correo
-            msg.send(fail_silently=False)
+            email_message.send(fail_silently=False)
             
             logger.info(f"Correo enviado exitosamente a {email}")
             
