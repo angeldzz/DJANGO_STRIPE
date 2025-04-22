@@ -15,6 +15,18 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import logging
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from .models import (
+    Category, Post, Veterinarian, VeterinaryClinic, Shelter, 
+    Product, Pet, UserProfile, Rating, Walker, Hairdresser
+)
+from .serializers import (
+    CategorySerializer, PostSerializer, VeterinarianSerializer, VeterinaryClinicSerializer,
+    ShelterSerializer, ProductSerializer, PetSerializer, UserProfileSerializer,
+    RatingSerializer, WalkerSerializer, HairdresserSerializer
+)
+from .permissions import IsOwnerOrReadOnly
 
 # Configurar logging
 logger = logging.getLogger(__name__)
@@ -28,6 +40,69 @@ class Inicio(TemplateView):
         list(storage)  # Esto marca los mensajes como consumidos
         return super().get(request, *args, **kwargs)
 
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class VeterinarianViewSet(viewsets.ModelViewSet):
+    queryset = Veterinarian.objects.all()
+    serializer_class = VeterinarianSerializer
+    permission_classes = [IsAuthenticated]
+
+class VeterinaryClinicViewSet(viewsets.ModelViewSet):
+    queryset = VeterinaryClinic.objects.all()
+    serializer_class = VeterinaryClinicSerializer
+    permission_classes = [IsAuthenticated]
+
+class ShelterViewSet(viewsets.ModelViewSet):
+    queryset = Shelter.objects.all()
+    serializer_class = ShelterSerializer
+    permission_classes = [IsAuthenticated]
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+
+class PetViewSet(viewsets.ModelViewSet):
+    queryset = Pet.objects.all()
+    serializer_class = PetSerializer
+    permission_classes = [IsAuthenticated]
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class RatingViewSet(viewsets.ModelViewSet):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user_profile=self.request.user.profile)
+
+class WalkerViewSet(viewsets.ModelViewSet):
+    queryset = Walker.objects.all()
+    serializer_class = WalkerSerializer
+    permission_classes = [IsAuthenticated]
+
+class HairdresserViewSet(viewsets.ModelViewSet):
+    queryset = Hairdresser.objects.all()
+    serializer_class = HairdresserSerializer
+    permission_classes = [IsAuthenticated]
 
 class CrearUsuarioView(View):
     template_name = 'base/registrarUsuario.html'  # Nombre del template

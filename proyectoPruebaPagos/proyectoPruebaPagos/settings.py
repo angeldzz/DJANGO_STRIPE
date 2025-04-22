@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,21 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Tiempo de vida del token de acceso
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Tiempo de vida del token de refresco
+    'ROTATE_REFRESH_TOKENS': True,  # Renovar automáticamente el token de refresco
+    'BLACKLIST_AFTER_ROTATION': True,  # Evitar reutilización de tokens viejos
+    'ALGORITHM': 'HS256',  # Algoritmo de encriptación
+    'SIGNING_KEY': SECRET_KEY,  # Usa la clave secreta del proyecto DJANGO
+}
+
