@@ -6,7 +6,7 @@ from django.utils import timezone
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)  # Solo auto_now_add
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Category"
@@ -42,8 +42,8 @@ class Veterinarian(models.Model):
         return self.name
     
     def get_average_rating(self):
-        ratings = self.rated_by_users.all()
-        return ratings.aggregate(models.Avg('score'))['score__avg'] or 0
+        from django.db.models import Avg
+        return Rating.objects.filter(veterinarian=self).aggregate(Avg('score'))['score__avg'] or 0
 
 class VeterinaryClinic(models.Model):
     name = models.CharField(max_length=100)
@@ -134,8 +134,8 @@ class UserProfile(models.Model):
         return self.adopted_pets.count()
 
 class Rating(models.Model):
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    veterinarian = models.ForeignKey(Veterinarian, on_delete=models.CASCADE)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='ratings')
+    veterinarian = models.ForeignKey(Veterinarian, on_delete=models.CASCADE, related_name='ratings')
     score = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)],
         help_text="Rating from 1 to 5"
